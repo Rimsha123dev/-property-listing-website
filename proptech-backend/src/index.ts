@@ -5,6 +5,7 @@ import cors from "cors";
 import authRoutes from "./routes/auth.routes";
 import protectedRoutes from "./routes/protected.routes";
 import propertyRoutes from "./routes/property.routes";
+import uploadRoute from "./routes/uploadRoute";
 
 dotenv.config();
 
@@ -20,6 +21,8 @@ app.use(cors());
 app.use("/api/auth", authRoutes);
 app.use("/api", protectedRoutes);
 app.use("/api/properties", propertyRoutes);
+app.use("/api/properties/upload", uploadRoute);
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

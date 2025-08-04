@@ -1,24 +1,52 @@
-// src/components/PropertyCard.tsx
 "use client";
+
 import Image from "next/image";
-import { Property } from "@/types";
+import { useRouter } from "next/navigation";
+
+type Property = {
+  id: string;
+  title: string;
+  price: number;
+  location: string;
+  type: string;
+  image: string;
+};
 
 export default function PropertyCard({ property }: { property: Property }) {
+  const router = useRouter();
+
   return (
-    <div className="border rounded-lg overflow-hidden shadow-md">
-      <Image
-        src={property.image}
-        alt={property.title}
-        width={400}
-        height={250}
-        className="w-full h-60 object-cover"
-      />
-      <div className="p-4">
-        <h2 className="text-xl font-semibold">{property.title}</h2>
-        <p className="text-gray-600">{property.location}</p>
-        <p className="text-green-600 font-bold">₹ {property.price}</p>
+    <div
+      className="rounded-2xl shadow-md overflow-hidden border hover:shadow-xl transition-shadow cursor-pointer bg-white"
+      onClick={() => router.push(`/properties/${property.id}`)}
+    >
+      <div className="relative w-full h-52">
+ <Image
+  src={property.image || "https://via.placeholder.com/400x200"}
+  alt={property.title}
+  fill
+  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+  className="object-cover"
+/>
+
+
+      </div>
+      <div className="p-4 space-y-2">
+        <h2 className="text-lg font-semibold text-gray-800 truncate">{property.title}</h2>
+        <p className="text-sm text-gray-500">{property.location}</p>
         <p className="text-sm text-gray-500 capitalize">{property.type}</p>
+        <p className="text-md font-bold text-indigo-600">Rs. {property.price}</p>
+        <button
+          className="mt-2 inline-block px-4 py-1.5 text-sm bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition"
+          onClick={(e) => {
+            e.stopPropagation();
+            router.push(`/properties/${property.id}`);
+          }}
+        >
+          View Details
+        </button>
       </div>
     </div>
   );
 }
+

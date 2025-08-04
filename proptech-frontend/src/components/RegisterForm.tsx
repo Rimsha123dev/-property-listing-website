@@ -1,0 +1,59 @@
+"use client";
+
+import { useForm } from "react-hook-form";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+
+type RegisterFormValues = {
+  username: string;
+  email: string;
+  password: string;
+};
+
+export default function RegisterForm() {
+  const { register, handleSubmit } = useForm<RegisterFormValues>();
+  const router = useRouter();
+
+  const onSubmit = async (data: RegisterFormValues) => {
+    try {
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/register`, data);
+      alert("Registration successful! Please login.");
+      router.push("/login"); // ➡️ take user to login
+    } catch (error) {
+      console.error("Registration failed:", error);
+      alert("Something went wrong.");
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 p-4 border rounded w-full max-w-md">
+      <h2 className="text-xl font-semibold">Register</h2>
+
+      <input
+        type="text"
+        placeholder="Username"
+        {...register("username")}
+        className="w-full p-2 border"
+      />
+      <input
+        type="email"
+        placeholder="Email"
+        {...register("email")}
+        className="w-full p-2 border"
+      />
+      <input
+        type="password"
+        placeholder="Password"
+        {...register("password")}
+        className="w-full p-2 border"
+      />
+
+      <button
+        type="submit"
+        className="bg-black text-white px-4 py-2 rounded"
+      >
+        Register
+      </button>
+    </form>
+  );
+}

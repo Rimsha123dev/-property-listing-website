@@ -134,3 +134,22 @@ export const deleteProperty = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Error deleting property", error });
   }
 };
+
+// upload image 
+export const uploadImage = async (req: Request, res: Response) => {
+   console.log("📸 File received:", req.file);
+  try {
+    // Multer puts the uploaded file info in req.file
+    if (!req.file) {
+      return res.status(400).json({ message: "No file uploaded" });
+    }
+
+    // File URL comes from Cloudinary (thanks to multer-storage-cloudinary)
+    const imageUrl = (req.file as Express.Multer.File).path;
+
+    return res.status(200).json({ message: "Upload successful", imageUrl });
+  } catch (error) {
+    console.error("[UPLOAD_IMAGE]", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};

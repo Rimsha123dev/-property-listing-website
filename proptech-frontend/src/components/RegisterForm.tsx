@@ -3,6 +3,7 @@
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import type { AxiosError } from "axios";
 
 type RegisterFormValues = {
   username: string;
@@ -19,10 +20,18 @@ export default function RegisterForm() {
       await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/register`, data);
       alert("Registration successful! Please login.");
       router.push("/login"); // ➡️ take user to login
-    } catch (error) {
-      console.error("Registration failed:", error);
-      alert("Something went wrong.");
-    }
+   } catch (error) {
+  const err = error as AxiosError<{ message: string }>;
+
+  if (err.response?.status === 400) {
+    alert("User already exists. Please login instead.");
+  } else if (err.response?.data?.message) {
+    alert(err.response.data.message);
+  } else {
+    alert("Something went wrong during registration.");
+  }
+}
+
   };
 
   return (

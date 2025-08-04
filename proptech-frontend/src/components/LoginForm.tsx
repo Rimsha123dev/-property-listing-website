@@ -34,17 +34,20 @@ export default function LoginForm() {
       } else {
         alert("No token received from server");
       }
-       } catch (error) {
-  const err = error as AxiosError<any>;
+   } catch (error) {
+  const err = error as AxiosError<{ message: string }>;
 
   if (err.response?.status === 401) {
     alert("Invalid email or password. Please try again or register.");
   } else if (err.response?.status === 400) {
     alert("User not registered. Please sign up first.");
+  } else if (err.response?.data?.message) {
+    alert(err.response.data.message); // Fallback to backend message if available
   } else {
     alert("Something went wrong. Please try again later.");
   }
 }
+
 
 
   };

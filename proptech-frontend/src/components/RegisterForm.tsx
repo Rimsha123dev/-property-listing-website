@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import type { AxiosError } from "axios";
 
 type RegisterFormValues = {
-  username: string;
+  name: string;
   email: string;
   password: string;
 };
@@ -41,7 +41,7 @@ export default function RegisterForm() {
       <input
         type="text"
         placeholder="Username"
-        {...register("username")}
+        {...register("name")}
         className="w-full p-2 border"
       />
       <input

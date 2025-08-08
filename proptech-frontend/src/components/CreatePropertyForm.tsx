@@ -51,7 +51,7 @@ export default function CreatePropertyForm() {
       }
     );
 
-    console.log("✅ Property created:", propertyRes.data);
+    // console.log(" Property created:", propertyRes.data);
     alert("Property created successfully!");
   } catch (err) {
     console.error("Something went wrong:", err);

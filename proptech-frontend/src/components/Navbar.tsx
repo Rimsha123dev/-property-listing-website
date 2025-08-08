@@ -42,6 +42,14 @@ const Navbar = () => {
 
         {/* Nav Buttons */}
         <div className="space-x-4">
+           <Link
+            href="/search"
+            className={`${
+              pathname === "/search" ? "text-blue-600 font-semibold" : "text-gray-600"
+            } hover:text-blue-700 transition`}
+          >
+            Search
+          </Link>
           <Link
             href="/register"
             className={`${

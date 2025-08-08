@@ -28,7 +28,7 @@ export default function LoginForm() {
       const token = res.data.token;
 
       if (token) {
-        localStorage.setItem("token", token); // ✅ Store token
+        localStorage.setItem("token", token); //  Store token
         alert("Login successful!");
         router.push("/"); // or navigate to dashboard
       } else {

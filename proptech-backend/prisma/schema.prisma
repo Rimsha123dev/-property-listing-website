@@ -20,32 +20,40 @@ model User {
   name     String
   email    String   @unique
   password String
-  properties Property[]
-  messages   Message[]
-  createdAt DateTime @default(now())
+  properties        Property[] @relation("UserProperties")
+  sentMessages      Message[]  @relation("SentMessages")
+  receivedMessages  Message[]  @relation("ReceivedMessages")
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
 }
 
+
 model Property {
-  id          String   @id @default(uuid())
+  id          String @id @default(uuid())
   title       String
   description String
   price       Int
   location    String
+  type        String
   image       String
-  type        String      //
-  owner       User     @relation(fields: [ownerId], references: [id])
   ownerId     String
-  createdAt   DateTime @default(now())
-   messages   Message[] 
-}
+  owner       User   @relation("UserProperties", fields: [ownerId], references: [id])
 
+  messages Message[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
 
 model Message {
   id         String   @id @default(uuid())
   content    String
-  sender     User     @relation(fields: [senderId], references: [id])
   senderId   String
-  property   Property @relation(fields: [propertyId], references: [id])
+  receiverId String
   propertyId String
   createdAt  DateTime @default(now())
+
+  sender   User     @relation("SentMessages", fields: [senderId], references: [id])
+  receiver User     @relation("ReceivedMessages", fields: [receiverId], references: [id])
+  property Property @relation(fields: [propertyId], references: [id])
 }

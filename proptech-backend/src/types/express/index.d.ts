@@ -8,4 +8,4 @@ declare global {
   }
 }
 
-export {}; // ✅ Needed to make this a module
+export {};

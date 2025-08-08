@@ -1,30 +1,31 @@
-import jwt from "jsonwebtoken";
-import { Request, Response, NextFunction } from "express";
-import { prisma } from "../lib/prisma";
+// import jwt from "jsonwebtoken";
+// import { Request, Response, NextFunction } from "express";
+// import { prisma } from "../lib/prisma";
 
-export const protect = async (req: Request, res: Response, next: NextFunction) => {
-  const authHeader = req.headers.authorization;
 
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res.status(401).json({ message: "No token provided" });
-  }
+// export const protect = async (req: Request, res: Response, next: NextFunction) => {
+//   const authHeader = req.headers.authorization;
 
-  const token = authHeader.split(" ")[1];
+//   if (!authHeader || !authHeader.startsWith("Bearer ")) {
+//     return res.status(401).json({ message: "No token provided" });
+//   }
 
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { id: string };
+//   const token = authHeader.split(" ")[1];
 
-    const user = await prisma.user.findUnique({
-      where: { id: decoded.id },
-    });
+//   try {
+//     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { id: string };
 
-    if (!user) {
-      return res.status(401).json({ message: "User not found" });
-    }
+//     const user = await prisma.user.findUnique({
+//       where: { id: decoded.id },
+//     });
 
-    req.user = user; // you already fixed typing in `express/index.d.ts`
-    next();
-  } catch (error) {
-    res.status(401).json({ message: "Invalid token" });
-  }
-};
+//     if (!user) {
+//       return res.status(401).json({ message: "User not found" });
+//     }
+
+//     req.user = user; // you already fixed typing in `express/index.d.ts`
+//     next();
+//   } catch (error) {
+//     res.status(401).json({ message: "Invalid token" });
+//   }
+// };

@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const CreatePropertyPage = () => {
   const router = useRouter();
@@ -18,7 +19,9 @@ const CreatePropertyPage = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
@@ -33,21 +36,24 @@ const CreatePropertyPage = () => {
     setLoading(true);
 
     try {
-      let imageUrl = "";
+      const token = localStorage.getItem("token");
+      if (!token) {
+        alert("You must be logged in to create a property.");
+        return;
+      }
 
+      let imageUrl = "";
       if (imageFile) {
         const formData = new FormData();
         formData.append("image", imageFile);
 
         const uploadRes = await axios.post(
-          "http://localhost:5000/api/properties/upload",
+          `${process.env.NEXT_PUBLIC_API_URL}/properties/upload`,
           formData
         );
 
         imageUrl = uploadRes.data.imageUrl;
       }
-
-      const token = localStorage.getItem("token");
 
       const propertyData = {
         ...form,
@@ -55,18 +61,18 @@ const CreatePropertyPage = () => {
         image: imageUrl,
       };
 
-      await axios.post("http://localhost:5000/api/properties/create", propertyData, {
+       axios.post(`${process.env.NEXT_PUBLIC_API_URL}/properties/create`, propertyData, {
         headers: {
           Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
         },
       });
 
       alert("Property created successfully!");
-      router.push("/"); // or wherever you list properties
-
+      router.push("/");
     } catch (error) {
-      console.error("❌ Property creation failed", error);
-      alert("Something went wrong. Try again!");
+      console.error("Property creation failed", error);
+      alert("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -121,6 +127,16 @@ const CreatePropertyPage = () => {
           {loading ? "Creating..." : "Create Property"}
         </button>
       </form>
+       <div  className="mt-10">
+          <Link href="/">
+                  <button className="flex items-center px-6 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
+                    </svg>
+                    Back to Properties
+                  </button>
+                </Link>
+       </div>
     </div>
   );
 };

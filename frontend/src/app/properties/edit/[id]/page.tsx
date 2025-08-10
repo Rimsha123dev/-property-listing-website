@@ -23,7 +23,7 @@ export default function EditPropertyPage() {
  useEffect(() => {
   const fetchProperty = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/properties/${id}`);
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/properties/${id}`);
       const property = res.data;
 
       setFormData({

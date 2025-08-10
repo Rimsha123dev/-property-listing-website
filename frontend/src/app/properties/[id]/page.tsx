@@ -48,7 +48,7 @@ const PropertyDetailPage = () => {
   try {
     const token = localStorage.getItem("token");
 
-    await axios.delete(`http://localhost:5000/api/properties/${params.id}`, {
+    await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/properties/${params.id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

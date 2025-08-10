@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "main": "dist/index.js",
 
-  "scripts": {
-    "dev": "ts-node src/index.ts",
+ "scripts": {
+  "postinstall": "prisma generate",
+  "dev": "ts-node src/index.ts",
     "build": "prisma generate && tsc"
   },
 

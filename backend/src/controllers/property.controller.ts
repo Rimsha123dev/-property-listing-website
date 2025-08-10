@@ -3,6 +3,8 @@ import { Request, Response } from "express";
 import { prisma } from "../lib/prisma";
 import { Prisma } from '@prisma/client';
 
+
+
 export const createProperty = async (req: Request, res: Response) => {
   const { title, description, price, location, image ,type} = req.body;
   const user = req.user;

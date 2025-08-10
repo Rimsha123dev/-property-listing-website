@@ -1,20 +1,9 @@
 {
   "version": 2,
   "builds": [
-    {
-      "src": "backend/api/**/*.ts",
-      "use": "@vercel/node",
-      "config": {
-        "includeFiles": ["backend/prisma/**"],
-        "zeroConfig": false
-      }
-    },
-    {
-      "src": "frontend/package.json",
-      "use": "@vercel/next"
-    }
+    { "src": "backend/api/**/*.ts", "use": "@vercel/node", "config": { "includeFiles": ["backend/prisma/**"] } },
+    { "src": "frontend/next.config.ts", "use": "@vercel/next" }
   ],
-  "buildCommand": "cd backend && npx prisma generate && cd .. && cd frontend && npm install && npm run build",
   "routes": [
     { "src": "/api/(.*)", "dest": "backend/api/$1" },
     { "src": "/(.*)", "dest": "frontend/$1" }

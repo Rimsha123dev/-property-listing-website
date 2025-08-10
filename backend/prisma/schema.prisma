@@ -1,13 +1,5 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
-  provider = "prisma-client-js"
-  // REMOVE this line if it exists:
-  // output   = "./src/generated/prisma"
+  provider      = "prisma-client-js"
   binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
 }
 
@@ -17,20 +9,19 @@ datasource db {
 }
 
 model User {
-  id       String   @id @default(uuid())
-  name     String
-  email    String   @unique
-  password String
-  properties        Property[] @relation("UserProperties")
-  sentMessages      Message[]  @relation("SentMessages")
-  receivedMessages  Message[]  @relation("ReceivedMessages")
-  createdAt         DateTime   @default(now())
-  updatedAt         DateTime   @updatedAt
+  id               String     @id @default(uuid())
+  name             String
+  email            String     @unique
+  password         String
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+  receivedMessages Message[]  @relation("ReceivedMessages")
+  sentMessages     Message[]  @relation("SentMessages")
+  properties       Property[] @relation("UserProperties")
 }
 
-
 model Property {
-  id          String @id @default(uuid())
+  id          String    @id @default(uuid())
   title       String
   description String
   price       Int
@@ -38,12 +29,10 @@ model Property {
   type        String
   image       String
   ownerId     String
-  owner       User   @relation("UserProperties", fields: [ownerId], references: [id])
-
-  messages Message[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  messages    Message[]
+  owner       User      @relation("UserProperties", fields: [ownerId], references: [id])
 }
 
 model Message {
@@ -53,8 +42,7 @@ model Message {
   receiverId String
   propertyId String
   createdAt  DateTime @default(now())
-
-  sender   User     @relation("SentMessages", fields: [senderId], references: [id])
-  receiver User     @relation("ReceivedMessages", fields: [receiverId], references: [id])
-  property Property @relation(fields: [propertyId], references: [id])
+  property   Property @relation(fields: [propertyId], references: [id])
+  receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id])
+  sender     User     @relation("SentMessages", fields: [senderId], references: [id])
 }

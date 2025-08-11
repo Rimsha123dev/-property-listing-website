@@ -30,14 +30,8 @@ type Property = {
 
 
 async function fetchProperties(): Promise<Property[]> {
-  // If running locally (development), use full API URL from env
-  // If running on Vercel (production), use relative URL (empty base)
-  const baseUrl =
-    process.env.NODE_ENV === 'development'
-      ? process.env.NEXT_PUBLIC_API_URL // e.g. "http://localhost:5000/api"
-      : '';
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
 
-  // Fetch from correct URL based on environment
   const res = await fetch(`${baseUrl}/properties/all`, {
     cache: 'no-store',
   });
@@ -48,6 +42,7 @@ async function fetchProperties(): Promise<Property[]> {
 
   return res.json();
 }
+
 
 
 

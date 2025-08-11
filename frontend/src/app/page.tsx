@@ -14,7 +14,7 @@ type Property = {
 
 async function fetchProperties(): Promise<Property[]> {
   console.log("API URL used:", process.env.NEXT_PUBLIC_API_URL);
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/properties/all`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/properties/all`, {
     cache: "no-store",
   });
 

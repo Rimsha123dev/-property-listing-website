@@ -12,34 +12,34 @@ type Property = {
   image: string;
 };
 
-// async function fetchProperties(): Promise<Property[]> {
-//   console.log("API URL used:", process.env.NEXT_PUBLIC_API_URL);
-//   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/properties/all`, {
-//     cache: "no-store",
-//   });
-
-//   console.log("HTTP status:", res.status);
-
-//   if (!res.ok) {
-//     console.error("Failed fetch:", await res.text());
-//     throw new Error("Failed to fetch properties");
-//   }
-
-//   return res.json();
-// }
-
-
 async function fetchProperties(): Promise<Property[]> {
-const res = await fetch(`/api/properties/all`, { cache: 'no-store' });
+  console.log("API URL used:", process.env.NEXT_PUBLIC_API_URL);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/properties/all`, {
+    cache: "no-store",
+  });
 
- 
+  console.log("HTTP status:", res.status);
 
   if (!res.ok) {
-    throw new Error('Failed to fetch properties');
+    console.error("Failed fetch:", await res.text());
+    throw new Error("Failed to fetch properties");
   }
 
   return res.json();
 }
+
+
+// async function fetchProperties(): Promise<Property[]> {
+// const res = await fetch(`/api/properties/all`, { cache: 'no-store' });
+
+ 
+
+//   if (!res.ok) {
+//     throw new Error('Failed to fetch properties');
+//   }
+
+//   return res.json();
+// }
 
 
 

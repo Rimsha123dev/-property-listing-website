@@ -30,11 +30,9 @@ type Property = {
 
 
 async function fetchProperties(): Promise<Property[]> {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
+const res = await fetch(`/api/properties/all`, { cache: 'no-store' });
 
-  const res = await fetch(`${baseUrl}/properties/all`, {
-    cache: 'no-store',
-  });
+ 
 
   if (!res.ok) {
     throw new Error('Failed to fetch properties');

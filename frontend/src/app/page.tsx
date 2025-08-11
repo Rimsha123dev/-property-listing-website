@@ -12,47 +12,44 @@ type Property = {
   image: string;
 };
 
+// async function fetchProperties(): Promise<Property[]> {
+//   console.log("API URL used:", process.env.NEXT_PUBLIC_API_URL);
+//   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/properties/all`, {
+//     cache: "no-store",
+//   });
+
+//   console.log("HTTP status:", res.status);
+
+//   if (!res.ok) {
+//     console.error("Failed fetch:", await res.text());
+//     throw new Error("Failed to fetch properties");
+//   }
+
+//   return res.json();
+// }
+
+
 async function fetchProperties(): Promise<Property[]> {
-  console.log("API URL used:", process.env.NEXT_PUBLIC_API_URL);
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/properties/all`, {
-    cache: "no-store",
+  // If running locally (development), use full API URL from env
+  // If running on Vercel (production), use relative URL (empty base)
+  const baseUrl =
+    process.env.NODE_ENV === 'development'
+      ? process.env.NEXT_PUBLIC_API_URL // e.g. "http://localhost:5000/api"
+      : '';
+
+  // Fetch from correct URL based on environment
+  const res = await fetch(`${baseUrl}/properties/all`, {
+    cache: 'no-store',
   });
 
-  console.log("HTTP status:", res.status);
-
   if (!res.ok) {
-    console.error("Failed fetch:", await res.text());
-    throw new Error("Failed to fetch properties");
+    throw new Error('Failed to fetch properties');
   }
 
   return res.json();
 }
 
-// async function fetchProperties(): Promise<Property[]> {
-//   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-  
-//   if (!apiUrl) {
-//     console.error("API URL is not defined");
-//     throw new Error("API URL is not configured");
-//   }
 
-//   try {
-//     console.log("Trying to fetch from:", `${apiUrl}/properties`);
-    
-//     const res = await fetch(`${apiUrl}/properties`, {
-//       cache: "no-store",
-//     });
-
-//     if (!res.ok) {
-//       throw new Error(`HTTP error! status: ${res.status}`);
-//     }
-
-//     return await res.json();
-//   } catch (error) {
-//     console.error("Failed to fetch properties:", error);
-//     throw new Error("Failed to load properties. Please check your connection and try again.");
-//   }
-// }
 
 export default async function Home() {
   const properties = await fetchProperties();
